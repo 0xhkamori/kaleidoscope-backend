@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+python-dotenv
+ytmusicapi
+yt-dlp
+pytube
+slowapi
+spotipy
+firebase-admin
+PyJWT
+passlib[bcrypt]
+python-multipart
+bcrypt==3.2.2
