@@ -52,7 +52,8 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'"
 
     # Remove server header for security
-    response.headers.pop("server", None)
+    if "server" in response.headers:
+        del response.headers["server"]
 
     return response
 
