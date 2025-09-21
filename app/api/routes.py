@@ -15,7 +15,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 @router.post("/register", response_model=TokenResponse)
 @limiter.limit("5/hour")
-async def register(request: Request, req: Request):
+async def register(request: Request):
     from app.core.config import users_ref, profiles_ref
 
     if not users_ref or not profiles_ref:
@@ -146,7 +146,7 @@ async def login(request: Request):
 
 @router.post("/refresh", response_model=TokenResponse)
 @limiter.limit("20/hour")
-async def refresh_token(req: Request):
+async def refresh_token(request: Request):
     from app.core.config import sessions_ref
 
     if not sessions_ref:
@@ -154,7 +154,7 @@ async def refresh_token(req: Request):
 
     # Parse JSON manually
     try:
-        data = await req.json()
+        data = await request.json()
     except:
         raise HTTPException(status_code=400, detail="Invalid JSON in request body")
 
@@ -203,7 +203,7 @@ async def refresh_token(req: Request):
         'sessionId': session_id,
         'userId': user_id,
         'refreshToken': new_refresh_token,
-        'userAgent': req.headers.get('user-agent'),
+        'userAgent': request.headers.get('user-agent'),
         'expiresAt': (datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)).isoformat()
     }
     sessions_ref.child(user_id).child(session_id).set(new_session_data)
