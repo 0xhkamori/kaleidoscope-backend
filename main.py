@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 logger.info("Starting Kaleidoscope Backend API...")
 
 # Configure rate limiting
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_remote_address, default_limits=["100/minute"])
 
 # Configure FastAPI with rate limiting
 app = FastAPI()
@@ -35,8 +35,7 @@ app.add_middleware(SlowAPIMiddleware)
 # Add global rate limiting (100 requests per minute per IP)
 @app.middleware("http")
 async def add_global_rate_limit(request: Request, call_next):
-    # Apply global rate limit to all endpoints
-    limiter.limit("100/minute")(lambda: None)()
+    # Global rate limit is applied via SlowAPIMiddleware with default_limits
     response = await call_next(request)
     return response
 
