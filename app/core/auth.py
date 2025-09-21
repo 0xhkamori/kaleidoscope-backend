@@ -21,19 +21,19 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     else:
         expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire, "type": "access"})
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm="HS256")
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY)
     return encoded_jwt
 
 def create_refresh_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire, "type": "refresh"})
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm="HS256")
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY)
     return encoded_jwt
 
 def decode_token(token: str):
     try:
-        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, JWT_SECRET_KEY)
         return payload
     except Exception:
         return None
