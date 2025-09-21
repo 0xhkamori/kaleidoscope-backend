@@ -1,5 +1,5 @@
 from jwt import JWT
-from jwcrypto import JWK
+from jwcrypto.jwk import JWK
 import uuid
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
