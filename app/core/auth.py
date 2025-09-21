@@ -1,4 +1,4 @@
-import jwt
+from jwt import JWT, ExpiredSignatureError, InvalidTokenError
 import uuid
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
@@ -6,6 +6,7 @@ from typing import Optional
 from .config import JWT_SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+jwt = JWT()
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -34,9 +35,9 @@ def decode_token(token: str):
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         return payload
-    except jwt.ExpiredSignatureError:
+    except ExpiredSignatureError:
         return None
-    except jwt.InvalidTokenError:
+    except InvalidTokenError:
         return None
 
 def generate_session_id():
