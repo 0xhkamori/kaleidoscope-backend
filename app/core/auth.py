@@ -1,4 +1,5 @@
-from jwt import JWT, ExpiredSignature, InvalidToken
+from jwt import JWT
+from jwt.exceptions import ExpiredSignature, InvalidToken
 import uuid
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
