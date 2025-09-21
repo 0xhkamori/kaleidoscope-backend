@@ -1,4 +1,4 @@
-import PyJWT as jwt
+import jwt
 import uuid
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
